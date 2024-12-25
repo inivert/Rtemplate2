@@ -61,7 +61,6 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Home, UtensilsCrossed, MapPin, Info, Phone } from 'lucide-vue-next'
-import PrimeVue from 'primevue/config'
 import 'primevue/resources/themes/lara-light-indigo/theme.css'
 import 'primeicons/primeicons.css'
 
