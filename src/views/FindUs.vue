@@ -56,7 +56,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 
 // Restaurant coordinates (Central US - Kansas)
 const coordinates = {
