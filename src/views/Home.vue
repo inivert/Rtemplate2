@@ -44,7 +44,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import 'primeicons/primeicons.css'
 
 const parallaxBg = ref<HTMLElement | null>(null)
-let lastScrollY = 0
 let rafId: number | null = null
 
 // Optimized smooth parallax effect
@@ -60,7 +59,6 @@ const handleScroll = () => {
       
       // Use transform3d for hardware acceleration
       parallaxBg.value.style.transform = `translate3d(0, ${translateY}px, 0)`
-      lastScrollY = currentScroll
     }
     rafId = null
   })
