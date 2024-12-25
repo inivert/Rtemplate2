@@ -27,7 +27,9 @@
       <div class="grid">
         <div class="col-12 md:col-4" v-for="feature in features" :key="feature.title">
           <div class="feature-card">
-            <i :class="feature.icon" class="feature-icon"></i>
+            <div class="feature-icon-wrapper">
+              <i :class="feature.icon"></i>
+            </div>
             <h3 class="feature-title">{{ feature.title }}</h3>
             <p class="feature-description">{{ feature.description }}</p>
           </div>
@@ -39,22 +41,23 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import 'primeicons/primeicons.css'
 
 const parallaxBg = ref<HTMLElement | null>(null)
 
 const features = [
   {
-    icon: 'pi pi-heart feature-icon-size',
+    icon: 'pi pi-heart feature-icon',
     title: 'Fresh Ingredients',
     description: 'We source the finest local ingredients to create our authentic dishes.'
   },
   {
-    icon: 'pi pi-star feature-icon-size',
+    icon: 'pi pi-star feature-icon',
     title: 'Family Recipes',
     description: 'Traditional family recipes passed down through generations.'
   },
   {
-    icon: 'pi pi-globe feature-icon-size',
+    icon: 'pi pi-globe feature-icon',
     title: 'Modern Fusion',
     description: 'Classic flavors meet contemporary culinary techniques.'
   }
@@ -156,16 +159,21 @@ onUnmounted(() => {
 }
 
 .feature-card {
-  padding: 2.5rem;
+  padding: 3rem 2.5rem;
   border-radius: 24px;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  background: white;
   box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.08),
     0 1px 0 rgba(255, 255, 255, 0.9) inset;
   text-align: center;
   height: 100%;
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
 }
 
 .feature-card::before {
@@ -176,31 +184,82 @@ onUnmounted(() => {
   right: 0;
   height: 4px;
   background: linear-gradient(90deg, var(--primary-color), #E67E22);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 184, 0, 0.1), rgba(230, 126, 34, 0.1));
+}
+
+.feature-icon-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), #E67E22);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon-wrapper::after {
+  opacity: 0.15;
+  transform: scale(1.1);
 }
 
 .feature-icon {
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   background: linear-gradient(135deg, var(--primary-color), #E67E22);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  position: relative;
+  z-index: 1;
 }
 
 .feature-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   color: var(--text-color);
   position: relative;
   display: inline-block;
 }
 
+.feature-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), #E67E22);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover .feature-title::after {
+  opacity: 1;
+}
+
 .feature-description {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--text-secondary-color);
   margin: 0;
 }
@@ -230,15 +289,26 @@ onUnmounted(() => {
   }
   
   .feature-card {
-    padding: 2rem;
+    padding: 2.5rem 2rem;
+  }
+  
+  .feature-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-icon {
+    font-size: 2.2rem;
   }
   
   .feature-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
   
   .feature-description {
     font-size: 1rem;
+    line-height: 1.6;
   }
 }
 </style> 
