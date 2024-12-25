@@ -44,6 +44,38 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import 'primeicons/primeicons.css'
 
 const parallaxBg = ref<HTMLElement | null>(null)
+const isMobile = ref(false)
+
+// Check if device is mobile
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
+// Optimized parallax scroll effect with requestAnimationFrame
+let ticking = false
+const handleScroll = () => {
+  if (!ticking && !isMobile.value) {
+    window.requestAnimationFrame(() => {
+      if (parallaxBg.value) {
+        const scrolled = window.scrollY
+        parallaxBg.value.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`
+      }
+      ticking = false
+    })
+    ticking = true
+  }
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', checkMobile)
+})
 
 const features = [
   {
@@ -62,22 +94,6 @@ const features = [
     description: 'Classic flavors meet contemporary culinary techniques.'
   }
 ]
-
-// Parallax scroll effect
-const handleScroll = () => {
-  if (parallaxBg.value) {
-    const scrolled = window.scrollY
-    parallaxBg.value.style.transform = `translate3d(0, ${scrolled * 0.5}px, 0)`
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <style scoped>
@@ -102,6 +118,8 @@ onUnmounted(() => {
   background-position: center;
   transform: translate3d(0, 0, 0);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .parallax-background::after {
@@ -309,6 +327,14 @@ onUnmounted(() => {
   .feature-description {
     font-size: 1rem;
     line-height: 1.6;
+  }
+  
+  .parallax-background {
+    /* Disable parallax on mobile */
+    transform: none !important;
+    background-attachment: scroll;
+    background-position: center;
+    will-change: auto;
   }
 }
 </style> 
