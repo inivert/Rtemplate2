@@ -44,37 +44,37 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import 'primeicons/primeicons.css'
 
 const parallaxBg = ref<HTMLElement | null>(null)
-const isMobile = ref(false)
+let lastScrollY = 0
+let rafId: number | null = null
 
-// Check if device is mobile
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768
-}
-
-// Optimized parallax scroll effect with requestAnimationFrame
-let ticking = false
+// Optimized smooth parallax effect
 const handleScroll = () => {
-  if (!ticking && !isMobile.value) {
-    window.requestAnimationFrame(() => {
-      if (parallaxBg.value) {
-        const scrolled = window.scrollY
-        parallaxBg.value.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`
-      }
-      ticking = false
-    })
-    ticking = true
-  }
+  if (rafId) return;
+  
+  rafId = requestAnimationFrame(() => {
+    if (parallaxBg.value) {
+      const currentScroll = window.scrollY
+      // Smoother movement with reduced intensity on mobile
+      const speed = window.innerWidth <= 768 ? 0.15 : 0.3
+      const translateY = currentScroll * speed
+      
+      // Use transform3d for hardware acceleration
+      parallaxBg.value.style.transform = `translate3d(0, ${translateY}px, 0)`
+      lastScrollY = currentScroll
+    }
+    rafId = null
+  })
 }
 
 onMounted(() => {
-  checkMobile()
   window.addEventListener('scroll', handleScroll, { passive: true })
-  window.addEventListener('resize', checkMobile)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  window.removeEventListener('resize', checkMobile)
+  if (rafId) {
+    cancelAnimationFrame(rafId)
+  }
 })
 
 const features = [
@@ -120,6 +120,10 @@ const features = [
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  perspective: 1000;
+  -webkit-perspective: 1000;
 }
 
 .parallax-background::after {
@@ -329,12 +333,13 @@ const features = [
     line-height: 1.6;
   }
   
+  /* Add mobile-specific optimizations */
   .parallax-background {
-    /* Disable parallax on mobile */
-    transform: none !important;
-    background-attachment: scroll;
-    background-position: center;
-    will-change: auto;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
   }
 }
 </style> 
