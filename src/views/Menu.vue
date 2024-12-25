@@ -45,7 +45,12 @@
           :hover="itemMotion.hover"
         >
           <div class="item-image">
-            <img :src="item.image" :alt="item.name">
+            <img 
+              :src="item.image" 
+              :alt="item.name"
+              @error="handleImageError"
+              loading="lazy"
+            >
             <span class="price">${{ item.price.toFixed(2) }}</span>
           </div>
           <div class="item-content">
@@ -77,7 +82,7 @@ const menuItems = [
     description: 'Corn tortillas filled with chicken, topped with green salsa, cream, and cheese',
     price: 15.99,
     category: 'main',
-    image: 'https://images.unsplash.com/photo-1534352956036-cd81e27dd615?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 2,
@@ -85,7 +90,7 @@ const menuItems = [
     description: 'Marinated pork tacos with pineapple, onion, and cilantro',
     price: 13.99,
     category: 'main',
-    image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1613514785940-daed07799d9b?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 3,
@@ -93,7 +98,7 @@ const menuItems = [
     description: 'Chicken in rich chocolate-chili sauce with sesame seeds',
     price: 17.99,
     category: 'main',
-    image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1562059390-a761a084768e?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 4,
@@ -101,7 +106,7 @@ const menuItems = [
     description: 'Fresh avocado dip with tomatoes, onions, and cilantro',
     price: 8.99,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1595018507685-7a8b8a5ff72c?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 5,
@@ -109,7 +114,7 @@ const menuItems = [
     description: 'Melted cheese with chorizo and tortillas',
     price: 9.99,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1618040996337-56904b7850b9?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1604478579007-7c86933da490?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 6,
@@ -117,7 +122,7 @@ const menuItems = [
     description: 'Grilled corn with mayo, cheese, chili powder, and lime',
     price: 6.99,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1593465678160-f99a8371fcf6?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1593465678160-f99a8371fcf6?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 7,
@@ -125,7 +130,7 @@ const menuItems = [
     description: 'Fried dough pastry with cinnamon sugar and chocolate sauce',
     price: 7.99,
     category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1624371414361-e670edf4698d?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1624371414361-e670edf4698d?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 8,
@@ -133,7 +138,7 @@ const menuItems = [
     description: 'Classic Mexican caramel custard',
     price: 6.99,
     category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1602663491496-73f07481dbea?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1554843522-c48d20f4bb6f?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 9,
@@ -141,7 +146,7 @@ const menuItems = [
     description: 'Three milk cake with whipped cream',
     price: 8.99,
     category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1602663491476-5f29e7df1c92?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1602663491496-73f07481dbea?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 10,
@@ -149,7 +154,7 @@ const menuItems = [
     description: 'Sweet rice drink with cinnamon',
     price: 3.99,
     category: 'drinks',
-    image: 'https://images.unsplash.com/photo-1586189552744-6a7070c4d841?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 11,
@@ -157,7 +162,7 @@ const menuItems = [
     description: 'Hibiscus iced tea',
     price: 3.99,
     category: 'drinks',
-    image: 'https://images.unsplash.com/photo-1560508180-03f285f67ded?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1560508180-03f285f67ded?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 12,
@@ -165,7 +170,7 @@ const menuItems = [
     description: 'Classic coke made with real sugar',
     price: 3.49,
     category: 'drinks',
-    image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=500&auto=format'
+    image: 'https://images.unsplash.com/photo-1581098365948-6a5a912b7a49?auto=format&fit=crop&w=600&q=80'
   }
 ]
 
@@ -237,6 +242,12 @@ const itemMotion = {
     }
   }
 }
+
+// Function to handle image loading errors
+const handleImageError = (e: Event) => {
+  const target = e.target as HTMLImageElement;
+  target.src = 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80' // Fallback image
+}
 </script>
 
 <style scoped>
@@ -301,20 +312,12 @@ const itemMotion = {
 }
 
 .item-image {
+  position: relative;
   width: 100%;
   height: 200px;
-  position: relative;
   overflow: hidden;
-}
-
-.item-image::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: linear-gradient(to bottom, transparent, white);
+  border-radius: 16px;
+  background: #f8f9fa;
 }
 
 .item-image img {
